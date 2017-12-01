@@ -11,36 +11,44 @@ import numpy as np
 import os
 
 
+invalid_training_type = "Error invalid training Type"
 
 FLAGS = None
+
 
 class utils_cls(self, FLAGS):
 
     def __init__(self):
-        self.name = name
+        self.name = FLAGS.TFRecordFile
+
+        def train_checker(FLAGS):
+            if FLAGS.train == 'Train':
+                self.directory = FLAGS.training_file_dir
+            elif FLAGS.train == 'Test':
+                self.directory = FLAGS.testing_file_dir
+            elif FLAGS.train == 'Validation':
+                self.directory = FLAGS.Validation_file_dir
+            else:
+                raise invalid_training_type
+            return directory
 
 
-    def _int64_feature(value):
+
+    def _int64_feature(self, value):
         return tf.train.Feature(int64_list = tf.train.Int64List(value=[value]))
 
-    def RecordWriter( name):
+    def Audio_feature_extractor(self):
         """
-        Loads data from wave file and saves it as an iterator system
+        Data is loaded into
 
-
+        :return:
         """
-        items = os.listdir(FLAGS.training_file_dir)
-        newlist = []
-        dataarray = []
-        features = []
-        bands = 20
-        frames = 41
+        x = []
+        sr = []
+        mfcc = []
         label = []
 
-        #Code to initialise the TFRecordWriter API
-        filename = os.path.join( name + '.tfrecords')
-        writer = tf.python_io.TFRecordWriter(filename)
-
+        items = os.listdir(directory)
         print(items)
         for f in items:
 
@@ -50,20 +58,40 @@ class utils_cls(self, FLAGS):
 
             # Loads the files found above in with librosa
             #        for fp in newlist:
-            fp = os.path.join(FLAGS.training_file_dir, f)
+            fp = os.path.join(directory, f)
             #            print('fp = ' + str(fp))
             x, sr = librosa.load(fp, 500, duration=5.0)
-
 
             if 'Noise' in fp:
 
                 label = 0
-            elif 'Minke'in fp:
+            elif 'Minke' in fp:
                 label = 1
             else:
                 raise Exception('Error')
 
             mfcc = librosa.feature.mfcc(y=x, sr=sr, n_mfcc=bands).T.flatten()[:, np.newaxis].T
+        return x, sr, mfcc, label
+
+    def RecordWriter(self, name, FLAGS):
+        """
+        Loads data from wave file and saves it as an iterator system
+        args:
+        name =
+
+        return:
+
+        """
+        newlist = []
+        dataarray = []
+        features = []
+        bands = 20
+        frames = 41
+        label = []
+        # Code to initialise the TFRecordWriter API
+        filename = os.path.join(name + '.tfrecords')
+        writer = tf.python_io.TFRecordWriter(filename)
+
 
         print('hello')
         for f in items:
@@ -88,7 +116,7 @@ class utils_cls(self, FLAGS):
 
         return 0
 
-    def recordReader():
+    def recordReader(self, ):
         return 0
 
 
