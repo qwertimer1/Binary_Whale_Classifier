@@ -16,7 +16,7 @@ invalid_training_type = "Error invalid training Type"
 FLAGS = None
 
 
-class utils_cls(self, FLAGS):
+class utils_cls():
 
     def __init__(self):
         self.name = FLAGS.TFRecordFile
@@ -115,6 +115,7 @@ class utils_cls(self, FLAGS):
             #raw_sounds.append(x)
 
         return 0
+
 
     def recordReader(self, ):
         return 0

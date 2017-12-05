@@ -10,19 +10,19 @@ def FLAGS_loader():
 
 
 #File IO information
-    parser.add_argument('train',
-                        type = str,
-                        default = 'train',
-                        help = ' Check whether the system is training or testing')
+    parser.add_argument('--train',
+                        type=str,
+                        default='train',
+                        help='Check whether the system is training or testing')
     parser.add_argument('--directory',
-                        type = str,
-                        default = '/home/tim/Documents/Masters/Data/tfRecord Writer',
-                        help = 'Directory to download data files and write the converted result')
+                        type=str,
+                        default='/home/tim/Documents/Masters/Data/tfRecord Writer',
+                        help='Directory to download data files and write the converted result')
 
     parser.add_argument('--training_file_dir',
-                        type = str,
-                        default = '/home/tim/Documents/Masters/Data/Autoencoder test/Training/Training',
-                        help = 'Location of Data for Training')
+                        type=str,Z
+                        default='/home/tim/Documents/Masters/Data/Autoencoder test/Training/Training',
+                        help='Location of Data for Training')
     parser.add_argument('--testing_file_dir',
                         type=str,
                         default='/home/tim/Documents/Masters/Data/Autoencoder test/Testing/',
@@ -37,9 +37,9 @@ def FLAGS_loader():
                         help='Location of Data')
 
     parser.add_argument('--TFRecordFile',
-                        type = str,
-                        default = sys.path + '/tmp/tmp',
-                        help = 'TFRecordWriter location'
+                        type=str,
+                        default=sys.path + '/tmp/tmp',
+                        help='TFRecordWriter location'
                         )
 
 
