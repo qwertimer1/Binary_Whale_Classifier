@@ -8,7 +8,7 @@ import librosa.display
 from Pandas import DataFrame
 import dill
 
-import os
+
 
 def convert_sound_waves(parent_dir,sub_dirs,file_ext="*.wav"):
     """
