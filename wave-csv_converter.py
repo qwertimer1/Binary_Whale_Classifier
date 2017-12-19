@@ -5,11 +5,12 @@ import glob
 import csv
 import librosa
 import librosa.display
+from Pandas import DataFrame
+import dill
 
-
-def load_sound_wave(parent_dir,sub_dirs,file_ext="*.wav"):
+def convert_sound_waves(parent_dir,sub_dirs,file_ext="*.wav"):
     """
-    load_sound_wave extracts from the list the amplitude of the audio signal(x)
+    convert_sound_waves extracts from the list the amplitude of the audio signal(x)
     and the sampling rate
     :param parent_dir: Location of Whale data for import
     sub_dirs
@@ -23,12 +24,26 @@ def load_sound_wave(parent_dir,sub_dirs,file_ext="*.wav"):
             print("Current File = " + fn)
             sound_clip, sr = librosa.load(fn)
             convert_to_csv(sound_clip, fn)
+            df = convert_to_dataframe(sound_clip, label)
+            DIL_pickle_files(df,fn)
             label = l
 
 
 
 
     return 0
+
+def convert_to_dataframe(sound_clip, label):
+    df = DataFrame()
+    df['sw'] = [sound_clip for soundclip in range(sound_clip)]
+    df['label']= label
+    print(df)
+    return df
+
+def DIL_pickle_files(df, fn):
+    fn = fn + 'DF'
+    with open(fn, "w") as dill_file:
+        dill.dump(df, dill_file)
 
 
 def convert_to_csv(sound_clip, fn):
@@ -58,8 +73,8 @@ def main():
     train_directories = get_directories(ROOT_PATH, train_data_directory)
 
 
-    sound_clip, _, _, fn = load_sound_wave(train_data_directory, train_directories)
-    convert_to_csv(sound_clip=sound_clip, fn= fn)
+    convert_sound_wave(train_data_directory, train_directories)
+
 
     return 0
 
