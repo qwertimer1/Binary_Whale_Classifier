@@ -15,7 +15,9 @@ import dill
 
 #SYSTEM TOOLS
 import os
+import glob
 
+import pandas as pd
 
 invalid_training_type = "Error invalid training Type"
 
@@ -25,21 +27,21 @@ FLAGS = None
 class utils_cls():
 
     def __init__(self):
-        self.name = FLAGS.TFRecordFile
-        self.ROOT_PATH = "/home/tim/Documents/Masters/Data"
+
+        self.ROOT_PATH = "D:\Masters\Data"
         self.invalid_training_type = invalid_training_type
-        self.fn = ########
 
 
 
-        if FLAGS.train == 'Train':
-            self.directory = FLAGS.training_file_dir
-        elif FLAGS.train == 'Test':
-            self.directory = FLAGS.testing_file_dir
-        elif FLAGS.train == 'Validation':
-            self.directory = FLAGS.Validation_file_dir
-        else:
-            raise self.invalid_training_type
+
+        # if FLAGS.train == 'Train':
+        #     self.directory = FLAGS.training_file_dir
+        # elif FLAGS.train == 'Test':
+        #     self.directory = FLAGS.testing_file_dir
+        # elif FLAGS.train == 'Validation':
+        #     self.directory = FLAGS.Validation_file_dir
+        # else:
+        #     raise self.invalid_training_type
 
 
 
@@ -128,6 +130,27 @@ class utils_cls():
     def recordReader(self, ):
         return 0
 
+    def load_sound_wave(self, parent_dir, sub_dirs, file_ext="*.wav"):
+        """
+        load_sound_wave extracts from the list the amplitude of the audio signal(x)
+        and the sampling rate
+        :param parent_dir: Location of Whale data for import
+        sub_dirs
+        file_ext="*.wav"
+        :return: x: Audio Signal
+                 sr: Sampling Rate
+        """
+
+        for l, sub_dir in enumerate(sub_dirs):
+
+            for fn in glob.glob(os.path.join(parent_dir, sub_dir, file_ext)):
+                sound_clip, sr = librosa.load(fn)
+            label = l
+            # df['t'] = [sound_clip for sound_clip in range(sound_clip)]
+            # df['label'] = label
+
+        return sound_clip, sr, label
+
     def _convert_sound_waves(self, parent_dir, sub_dirs, file_ext="*.wav"):
         """
         convert_sound_waves extracts from the list the amplitude of the audio signal(x)
@@ -144,24 +167,34 @@ class utils_cls():
                 self.fn = fn
                 print("Current File = " + fn)
                 sound_clip, sr = librosa.load(fn)
-                self._convert_to_csv(sound_clip, fn)
-                df = self._convert_to_dataframe(sound_clip, label)
-                self._DIL_pickle_files(df, fn)
                 label = l
 
-        return 0
+                #####
+                # Leave this for now as i am not sure the best way to do this.
 
-    def _convert_to_dataframe(self, sound_clip, label):
-        df = DataFrame()
-        df['sw'] = [sound_clip for soundclip in range(sound_clip)]
-        df['label'] = label
-        print(df)
-        return df
+                #self._convert_to_csv(sound_clip, fn)
+                #df = self._convert_to_dataframe(sound_clip, label)
+                #self._DIL_pickle_files(df, fn)
+                label = l
 
-    def _DIL_pickle_files(df, fn):
-        fn = fn + 'DF'
-        with open(fn, "w") as dill_file:
-            dill.dump(df, dill_file)
+        return sound_clip, sr
+
+    # def _convert_to_dataframe(self, sound_clip, label):
+    #     df = pd.DataFrame()
+    #     df['sw'] =
+    #     df['label'] = label
+    #     print(df)
+    #     return df
+
+    def DILL_pickle_files(self, sounds, fn):
+
+        with open(fn, "wb") as dill_file:
+            pickle.dump(sounds, dill_file)
+
+    def DILL_unpickle_files(self, fn):
+        with open(fn, "rb") as dill_file:
+            pickled_sounds = pickle.load(dill_file)
+            return pickled_sounds
 
     def _convert_to_csv(self, sound_clip, fn):
         fn = fn + ".csv"
@@ -188,7 +221,7 @@ class utils_cls():
 
         train_directories = self._get_directories(self.ROOT_PATH, train_data_directory)
 
-        self._convert_sound_wave(train_data_directory, train_directories)
+        self._convert_sound_waves(train_data_directory, train_directories)
 
         return 0
 
