@@ -148,7 +148,7 @@ class utils_cls():
             label = l
             # df['t'] = [sound_clip for sound_clip in range(sound_clip)]
             # df['label'] = label
-
+        print(type(sound_clip  ))
         return sound_clip, sr, label
 
     def _convert_sound_waves(self, parent_dir, sub_dirs, file_ext="*.wav"):
@@ -189,11 +189,11 @@ class utils_cls():
     def DILL_pickle_files(self, sounds, fn):
 
         with open(fn, "wb") as dill_file:
-            pickle.dump(sounds, dill_file)
+            dill.dump(sounds, dill_file)
 
     def DILL_unpickle_files(self, fn):
         with open(fn, "rb") as dill_file:
-            pickled_sounds = pickle.load(dill_file)
+            pickled_sounds = dill.load(dill_file)
             return pickled_sounds
 
     def _convert_to_csv(self, sound_clip, fn):
