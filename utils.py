@@ -144,7 +144,7 @@ class utils_cls():
         for l, sub_dir in enumerate(sub_dirs):
 
             for fn in glob.glob(os.path.join(parent_dir, sub_dir, file_ext)):
-                sound_clip, sr = librosa.load(fn)
+                sound_clip, sr = librosa.load(fn, sr = None)
             label = l
             # df['t'] = [sound_clip for sound_clip in range(sound_clip)]
             # df['label'] = label
